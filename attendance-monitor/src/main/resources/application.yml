@@ -1,0 +1,48 @@
+server.port: 8081
+spring:
+  application:
+    name: attendance-monitor
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST_PORT}/${MYSQL_ATTENDANCE_DB}?createDatabaseIfNotExist=true
+    username: ${MYSQL_ATTENDANCE_DB_USERNAME}
+    password: ${MYSQL_ATTENDANCE_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    template:
+      default-topic: ${KAFKA_DEFAULT_TOPIC}
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      group-id: attendance_consumer_group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  jackson:
+    default-property-inclusion: non-null
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+  metrics:
+   distribution:
+    percentiles-histogram:
+     http.server.requests: true
+
+logging:
+#  pattern:
+#    level: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    '[com.attendance.monitor]': DEBUG  
