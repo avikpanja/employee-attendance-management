@@ -80,6 +80,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
+						<env>
+                <SERVICE_BINDING_ROOT>/bindings</SERVICE_BINDING_ROOT>
+            </env>
 						<bindings>
 							<binding>
 								${basedir}/bindings/ca-certificates:/platform/bindings/ca-certificates</binding>
